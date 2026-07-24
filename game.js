@@ -104,24 +104,25 @@
   }
 
   /* ============================================================
+     AUDIO ENGINE (shared Web Audio context for SFX + music)
+  ============================================================ */
+  let audioCtx = null;
+  function getAudioCtx() {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    if (!audioCtx) audioCtx = new AC();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
+  /* ============================================================
      SOUND FX (synthesized with Web Audio — no external files)
   ============================================================ */
   const SFX = (() => {
-    let ctx = null;
-    function ensureCtx() {
-      const AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) return null;
-      if (!ctx) ctx = new AC();
-      if (ctx.state === 'suspended') ctx.resume();
-      return ctx;
-    }
-    window.addEventListener('pointerdown', ensureCtx, { once: true });
-    window.addEventListener('keydown', ensureCtx, { once: true });
-
     function tone(freq, dur, type, opts) {
       opts = opts || {};
       if (!state.settings.sfx) return;
-      const c = ensureCtx();
+      const c = getAudioCtx();
       if (!c) return;
       const t0 = c.currentTime + (opts.delay || 0);
       const osc = c.createOscillator();
@@ -161,6 +162,79 @@
       fanfare() { notes([[523, 0.1, 0], [659, 0.1, 0.1], [784, 0.1, 0.2], [1046, 0.25, 0.3]], 'square'); },
     };
   })();
+
+  /* ============================================================
+     BACKGROUND MUSIC (synthesized looping chiptune, no external files)
+  ============================================================ */
+  const MUSIC = (() => {
+    const BPM = 126;
+    const STEP = 60 / BPM / 2;
+    const BAR_STEPS = 16;
+    const BAR_DUR = STEP * BAR_STEPS;
+    const VOLUME = 0.13;
+
+    // two-bar loop, pentatonic-ish, 0 = rest
+    const bass = [130.81, 0, 130.81, 0, 164.81, 0, 146.83, 0, 110.00, 0, 110.00, 0, 130.81, 0, 123.47, 0];
+    const lead = [0, 523.25, 0, 659.25, 523.25, 0, 659.25, 0, 0, 493.88, 0, 587.33, 493.88, 0, 587.33, 0];
+
+    let masterGain = null;
+    let playing = false;
+    let timer = null;
+
+    function pluck(freq, t0, dur, type, vol) {
+      const c = getAudioCtx();
+      const osc = c.createOscillator();
+      const gain = c.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, t0);
+      gain.gain.setValueAtTime(0.0001, t0);
+      gain.gain.exponentialRampToValueAtTime(vol, t0 + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      osc.connect(gain).connect(masterGain);
+      osc.start(t0);
+      osc.stop(t0 + dur + 0.02);
+    }
+
+    function scheduleBar(t0) {
+      bass.forEach((freq, i) => { if (freq) pluck(freq, t0 + i * STEP, STEP * 0.92, 'square', 0.55); });
+      lead.forEach((freq, i) => { if (freq) pluck(freq, t0 + i * STEP, STEP * 1.7, 'triangle', 0.32); });
+    }
+
+    function tick() {
+      if (!playing) return;
+      const c = getAudioCtx();
+      if (c) scheduleBar(c.currentTime + 0.05);
+      timer = setTimeout(tick, BAR_DUR * 1000);
+    }
+
+    function start() {
+      if (playing) return;
+      const c = getAudioCtx();
+      if (!c) return;
+      if (!masterGain) {
+        masterGain = c.createGain();
+        masterGain.gain.value = state.settings.music ? VOLUME : 0;
+        masterGain.connect(c.destination);
+      }
+      playing = true;
+      tick();
+    }
+
+    function setEnabled(on) {
+      const c = getAudioCtx();
+      if (!masterGain || !c) return;
+      masterGain.gain.setTargetAtTime(on ? VOLUME : 0, c.currentTime, 0.3);
+    }
+
+    return { start, setEnabled };
+  })();
+
+  function unlockAudio() {
+    getAudioCtx();
+    MUSIC.start();
+  }
+  window.addEventListener('pointerdown', unlockAudio, { once: true });
+  window.addEventListener('keydown', unlockAudio, { once: true });
 
   /* ============================================================
      DOM / ROUTER
@@ -471,6 +545,7 @@
     input.checked = state.settings[settingsMap[id]];
     input.addEventListener('change', () => {
       state.settings[settingsMap[id]] = input.checked;
+      if (id === 'opt-music') MUSIC.setEnabled(input.checked);
       SFX.toggle();
       applySettingsSideEffects();
     });
