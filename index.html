@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Swap Dino</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;700;900&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="phone">
+
+  <!-- ============ HOME ============ -->
+  <section class="screen" id="screen-home" data-screen="home">
+    <div class="scene-wrap">
+      <div class="parallax-bg" data-parallax="home"></div>
+      <div class="col header-row">
+        <button class="icon-btn" data-nav="settings" aria-label="Settings">
+          <img src="assets/icon_gear.png" alt="">
+        </button>
+        <div class="coin-chip"><img src="assets/icon_star.png" alt=""><span id="home-coins">0</span></div>
+      </div>
+      <div class="col hero-copy">
+        <div class="title-row">
+          <span class="dot"></span>
+          <h1 class="game-title"><span class="t-dark">SWAP</span><span class="t-green">DINO</span></h1>
+          <span class="dot"></span>
+        </div>
+        <div class="subtitle-row">
+          <span class="hr"></span><span class="subtitle">CREATE YOUR OWN RUN</span><span class="hr"></span>
+        </div>
+      </div>
+      <div class="hero-dino">
+        <img id="home-dino-img" src="assets/dino_full.png" alt="dino" class="run-bob">
+      </div>
+      <div class="col cta-col">
+        <button class="btn btn-primary" data-nav="gameplay" data-action="start-game">
+          <img class="btn-icon" src="assets/play.png" alt=""><span>PLAY</span>
+        </button>
+        <button class="btn btn-secondary" data-nav="customize">
+          <img class="btn-icon" src="assets/customize.png" alt=""><span>CUSTOMIZE</span>
+        </button>
+      </div>
+    </div>
+    <nav class="bottom-nav">
+      <button class="nav-tab" data-tab="scores" data-nav="scores"><img src="assets/Scores.png" alt=""><span>SCORES</span></button>
+      <button class="nav-tab" data-tab="characters" data-nav="characters"><img src="assets/Characters.png" alt=""><span>CHARACTERS</span></button>
+      <button class="nav-tab" data-tab="obstacles" data-nav="obstacles"><img src="assets/Obstacles.png" alt=""><span>OBSTACLES</span></button>
+      <button class="nav-tab" data-tab="worlds" data-nav="worlds"><img src="assets/worlds.png" alt=""><span>WORLDS</span></button>
+    </nav>
+  </section>
+
+  <!-- ============ CUSTOMIZE ============ -->
+  <section class="screen" id="screen-customize" data-screen="customize">
+    <header class="page-header">
+      <button class="icon-btn" data-nav="home" aria-label="Back"><img class="flip" src="assets/icon_play.png" alt="back"></button>
+      <div class="coin-chip"><img src="assets/icon_star.png" alt=""><span class="coins-echo">0</span></div>
+    </header>
+    <div class="page-content">
+      <div class="title-block">
+        <h1 class="heading">CUSTOMIZE</h1>
+        <div class="subtitle-row"><span class="hr sm"></span><span class="subtitle sm">BUILD YOUR RUN</span><span class="hr sm"></span></div>
+      </div>
+
+      <div class="custom-section">
+        <p class="section-label">01 &middot; CHOOSE CHARACTER</p>
+        <div class="mini-row" id="customize-characters"></div>
+      </div>
+      <div class="custom-section">
+        <p class="section-label">02 &middot; CHOOSE OBSTACLES</p>
+        <div class="mini-row" id="customize-obstacles"></div>
+      </div>
+      <div class="custom-section">
+        <p class="section-label">03 &middot; CHOOSE WORLD</p>
+        <div class="mini-row" id="customize-worlds"></div>
+      </div>
+
+      <button class="btn btn-primary full" data-nav="gameplay" data-action="start-game">
+        <img class="btn-icon" src="assets/play.png" alt=""><span>PLAY</span>
+      </button>
+    </div>
+    <nav class="bottom-nav">
+      <button class="nav-tab" data-tab="scores" data-nav="scores"><img src="assets/Scores.png" alt=""><span>SCORES</span></button>
+      <button class="nav-tab" data-tab="characters" data-nav="characters"><img src="assets/Characters.png" alt=""><span>CHARACTERS</span></button>
+      <button class="nav-tab" data-tab="obstacles" data-nav="obstacles"><img src="assets/Obstacles.png" alt=""><span>OBSTACLES</span></button>
+      <button class="nav-tab" data-tab="worlds" data-nav="worlds"><img src="assets/worlds.png" alt=""><span>WORLDS</span></button>
+    </nav>
+  </section>
+
+  <!-- ============ CHARACTER LIBRARY ============ -->
+  <section class="screen" id="screen-characters" data-screen="characters">
+    <header class="page-header">
+      <button class="icon-btn" data-nav="home" aria-label="Back"><img class="flip" src="assets/icon_play.png" alt="back"></button>
+      <div class="coin-chip"><img src="assets/icon_star.png" alt=""><span class="coins-echo">0</span></div>
+    </header>
+    <div class="page-content">
+      <div class="title-block">
+        <h1 class="heading">CHARACTER LIBRARY</h1>
+        <div class="subtitle-row"><span class="hr sm"></span><span class="subtitle sm">CHOOSE YOUR DINO</span><span class="hr sm"></span></div>
+      </div>
+      <div class="search-bar"><img src="assets/icon_gear.png" style="opacity:0;width:16px" alt=""><input placeholder="Search characters..." id="character-search"></div>
+      <div class="filter-tabs" id="character-filters">
+        <button class="filter-tab active" data-filter="all">ALL</button>
+        <button class="filter-tab" data-filter="unlocked">UNLOCKED</button>
+        <button class="filter-tab" data-filter="locked">LOCKED</button>
+        <button class="filter-tab" data-filter="rare">RARE</button>
+      </div>
+      <div class="card-grid" id="character-grid"></div>
+      <div class="selected-panel" id="character-selected-panel"></div>
+    </div>
+    <nav class="bottom-nav">
+      <button class="nav-tab" data-tab="scores" data-nav="scores"><img src="assets/Scores.png" alt=""><span>SCORES</span></button>
+      <button class="nav-tab" data-tab="characters" data-nav="characters"><img src="assets/Characters.png" alt=""><span>CHARACTERS</span></button>
+      <button class="nav-tab" data-tab="obstacles" data-nav="obstacles"><img src="assets/Obstacles.png" alt=""><span>OBSTACLES</span></button>
+      <button class="nav-tab" data-tab="worlds" data-nav="worlds"><img src="assets/worlds.png" alt=""><span>WORLDS</span></button>
+    </nav>
+  </section>
+
+  <!-- ============ WORLD LIBRARY ============ -->
+  <section class="screen" id="screen-worlds" data-screen="worlds">
+    <header class="page-header">
+      <button class="icon-btn" data-nav="home" aria-label="Back"><img class="flip" src="assets/icon_play.png" alt="back"></button>
+      <div class="coin-chip"><img src="assets/icon_star.png" alt=""><span class="coins-echo">0</span></div>
+    </header>
+    <div class="page-content">
+      <div class="title-block">
+        <h1 class="heading">WORLD LIBRARY</h1>
+        <div class="subtitle-row"><span class="hr sm"></span><span class="subtitle sm">PICK YOUR TERRAIN</span><span class="hr sm"></span></div>
+      </div>
+      <div class="filter-tabs" id="world-filters">
+        <button class="filter-tab active" data-filter="all">ALL</button>
+        <button class="filter-tab" data-filter="unlocked">UNLOCKED</button>
+        <button class="filter-tab" data-filter="locked">LOCKED</button>
+      </div>
+      <div class="card-grid two-col" id="world-grid"></div>
+      <div class="selected-panel" id="world-selected-panel"></div>
+    </div>
+    <nav class="bottom-nav">
+      <button class="nav-tab" data-tab="scores" data-nav="scores"><img src="assets/Scores.png" alt=""><span>SCORES</span></button>
+      <button class="nav-tab" data-tab="characters" data-nav="characters"><img src="assets/Characters.png" alt=""><span>CHARACTERS</span></button>
+      <button class="nav-tab" data-tab="obstacles" data-nav="obstacles"><img src="assets/Obstacles.png" alt=""><span>OBSTACLES</span></button>
+      <button class="nav-tab" data-tab="worlds" data-nav="worlds"><img src="assets/worlds.png" alt=""><span>WORLDS</span></button>
+    </nav>
+  </section>
+
+  <!-- ============ OBSTACLE LIBRARY ============ -->
+  <section class="screen" id="screen-obstacles" data-screen="obstacles">
+    <header class="page-header">
+      <button class="icon-btn" data-nav="home" aria-label="Back"><img class="flip" src="assets/icon_play.png" alt="back"></button>
+      <div class="coin-chip"><img src="assets/icon_star.png" alt=""><span class="coins-echo">0</span></div>
+    </header>
+    <div class="page-content">
+      <div class="title-block">
+        <h1 class="heading">OBSTACLE LIBRARY</h1>
+        <div class="subtitle-row"><span class="hr sm"></span><span class="subtitle sm">CHOOSE YOUR CHALLENGE</span><span class="hr sm"></span></div>
+      </div>
+      <div class="filter-tabs" id="obstacle-filters">
+        <button class="filter-tab active" data-filter="all">ALL</button>
+        <button class="filter-tab" data-filter="unlocked">UNLOCKED</button>
+        <button class="filter-tab" data-filter="locked">LOCKED</button>
+        <button class="filter-tab" data-filter="rare">RARE</button>
+      </div>
+      <div class="obstacle-list" id="obstacle-list"></div>
+      <div class="selected-panel" id="obstacle-selected-panel"></div>
+    </div>
+    <nav class="bottom-nav">
+      <button class="nav-tab" data-tab="scores" data-nav="scores"><img src="assets/Scores.png" alt=""><span>SCORES</span></button>
+      <button class="nav-tab" data-tab="characters" data-nav="characters"><img src="assets/Characters.png" alt=""><span>CHARACTERS</span></button>
+      <button class="nav-tab" data-tab="obstacles" data-nav="obstacles"><img src="assets/Obstacles.png" alt=""><span>OBSTACLES</span></button>
+      <button class="nav-tab" data-tab="worlds" data-nav="worlds"><img src="assets/worlds.png" alt=""><span>WORLDS</span></button>
+    </nav>
+  </section>
+
+  <!-- ============ SCORES ============ -->
+  <section class="screen" id="screen-scores" data-screen="scores">
+    <header class="page-header">
+      <button class="icon-btn" data-nav="home" aria-label="Back"><img class="flip" src="assets/icon_play.png" alt="back"></button>
+      <div class="coin-chip"><img src="assets/icon_star.png" alt=""><span class="coins-echo">0</span></div>
+    </header>
+    <div class="page-content">
+      <div class="title-block">
+        <h1 class="heading">SCOREBOARD</h1>
+        <div class="subtitle-row"><span class="hr sm"></span><span class="subtitle sm">YOUR BEST RUNS</span><span class="hr sm"></span></div>
+      </div>
+      <div class="stat-card-row">
+        <div class="stat-card"><img src="assets/Scores.png" alt=""><p class="stat-value" id="scores-best">0</p><p class="stat-label">BEST SCORE</p></div>
+        <div class="stat-card"><img src="assets/icon_star.png" alt=""><p class="stat-value" id="scores-coins">0</p><p class="stat-label">TOTAL COINS</p></div>
+      </div>
+      <p class="section-label">RECENT RUNS</p>
+      <div class="history-list" id="scores-history"></div>
+    </div>
+    <nav class="bottom-nav">
+      <button class="nav-tab" data-tab="scores" data-nav="scores"><img src="assets/Scores.png" alt=""><span>SCORES</span></button>
+      <button class="nav-tab" data-tab="characters" data-nav="characters"><img src="assets/Characters.png" alt=""><span>CHARACTERS</span></button>
+      <button class="nav-tab" data-tab="obstacles" data-nav="obstacles"><img src="assets/Obstacles.png" alt=""><span>OBSTACLES</span></button>
+      <button class="nav-tab" data-tab="worlds" data-nav="worlds"><img src="assets/worlds.png" alt=""><span>WORLDS</span></button>
+    </nav>
+  </section>
+
+  <!-- ============ SETTINGS ============ -->
+  <section class="screen" id="screen-settings" data-screen="settings">
+    <header class="page-header centered">
+      <button class="icon-btn" data-nav="home" aria-label="Back"><img class="flip" src="assets/icon_play.png" alt="back"></button>
+      <h1 class="heading small">SETTINGS</h1>
+      <div class="coin-chip"><img src="assets/icon_star.png" alt=""><span class="coins-echo">0</span></div>
+    </header>
+    <p class="subtitle center-sub">CUSTOMIZE YOUR GAME</p>
+    <div class="page-content settings-content">
+      <div class="settings-group">
+        <p class="section-label">01 &middot; AUDIO</p>
+        <div class="settings-card">
+          <div class="toggle-row"><span>Music</span><label class="toggle"><input type="checkbox" id="opt-music" checked><span class="slider"></span></label></div>
+          <div class="toggle-row"><span>Sound Effects</span><label class="toggle"><input type="checkbox" id="opt-sfx" checked><span class="slider"></span></label></div>
+          <div class="toggle-row"><span>Vibration</span><label class="toggle"><input type="checkbox" id="opt-vibration" checked><span class="slider"></span></label></div>
+        </div>
+      </div>
+      <div class="settings-group">
+        <p class="section-label">02 &middot; GAMEPLAY</p>
+        <div class="settings-card">
+          <div class="toggle-row"><span>Left-handed Mode</span><label class="toggle"><input type="checkbox" id="opt-lefthand"><span class="slider"></span></label></div>
+          <div class="toggle-row"><span>Show Tutorial</span><label class="toggle"><input type="checkbox" id="opt-tutorial" checked><span class="slider"></span></label></div>
+          <div class="toggle-row"><span>Auto Pause</span><label class="toggle"><input type="checkbox" id="opt-autopause" checked><span class="slider"></span></label></div>
+        </div>
+      </div>
+      <div class="settings-group">
+        <p class="section-label">03 &middot; DISPLAY</p>
+        <div class="settings-card">
+          <div class="slider-row"><span>Pixel Scale</span><input type="range" id="opt-pixelscale" min="1" max="3" step="1" value="2" class="range"></div>
+          <div class="toggle-row"><span>Animations</span><label class="toggle"><input type="checkbox" id="opt-animations" checked><span class="slider"></span></label></div>
+          <div class="toggle-row"><span>High Quality Graphics</span><label class="toggle"><input type="checkbox" id="opt-hq" checked><span class="slider"></span></label></div>
+        </div>
+      </div>
+      <div class="settings-group">
+        <p class="section-label">04 &middot; LANGUAGE</p>
+        <div class="settings-card">
+          <div class="select-row"><span>Current Language</span>
+            <select id="opt-language"><option>ENGLISH</option><option>ESPA&Ntilde;OL</option><option>FRAN&Ccedil;AIS</option><option>DEUTSCH</option></select>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary full" id="save-settings-btn">SAVE SETTINGS</button>
+    </div>
+  </section>
+
+  <!-- ============ GAMEPLAY ============ -->
+  <section class="screen" id="screen-gameplay" data-screen="gameplay">
+    <header class="game-hud">
+      <button class="icon-btn small" id="pause-btn" aria-label="Pause">
+        <span class="pause-icon">&#10074;&#10074;</span>
+      </button>
+      <div class="coin-chip"><img src="assets/icon_star.png" alt=""><span id="hud-run-coins">0</span></div>
+      <div class="coin-chip"><img src="assets/Scores.png" alt=""><span id="hud-best">0</span></div>
+    </header>
+    <canvas id="game-canvas" width="402" height="620"></canvas>
+    <div id="tap-hint">TAP TO JUMP &middot; HOLD TO DUCK</div>
+
+    <!-- Paused overlay -->
+    <div class="overlay hidden" id="overlay-paused">
+      <div class="modal">
+        <h2 class="heading small">PAUSED</h2>
+        <div class="mini-divider"></div>
+        <button class="btn btn-primary full" id="resume-btn"><img class="btn-icon" src="assets/play.png" alt=""><span>RESUME</span></button>
+        <button class="btn btn-secondary full" id="restart-btn">&#8635; RESTART</button>
+        <button class="btn btn-secondary full" data-nav="customize">&#9998; CUSTOMIZE</button>
+        <button class="btn btn-secondary full" data-nav="settings">&#9881; SETTINGS</button>
+        <div class="modal-divider"></div>
+        <button class="btn btn-danger full" data-nav="home">&#8674; QUIT</button>
+      </div>
+    </div>
+
+    <!-- Game Over overlay -->
+    <div class="overlay hidden" id="overlay-gameover">
+      <div class="modal">
+        <h2 class="heading">GAME OVER</h2>
+        <div class="subtitle-row"><span class="hr sm"></span><span class="subtitle sm">RUN COMPLETE</span><span class="hr sm"></span></div>
+        <div class="score-card">
+          <p class="final-score-label">FINAL SCORE</p>
+          <p class="final-score-value" id="final-score">0</p>
+          <div class="score-row"><span><img class="inline-icon" src="assets/Scores.png" alt="">BEST SCORE</span><b id="go-best">0</b></div>
+          <div class="score-row"><span><img class="inline-icon" src="assets/icon_star.png" alt="">COINS EARNED</span><b id="go-coins">+0</b></div>
+        </div>
+        <p class="section-label center">ACHIEVEMENTS</p>
+        <div class="achievement-row" id="achievement-row"></div>
+        <button class="btn btn-primary full" id="play-again-btn"><img class="btn-icon" src="assets/play.png" alt=""><span>PLAY AGAIN</span></button>
+        <button class="btn btn-secondary full" data-nav="customize">CUSTOMIZE</button>
+        <button class="btn btn-secondary full" data-nav="home">HOME</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+<script src="game.js"></script>
+</body>
+</html>
