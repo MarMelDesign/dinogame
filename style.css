@@ -32,7 +32,7 @@
 
 html, body {
   margin: 0;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
   background: #d8cdb0;
   color: var(--text-primary);
@@ -200,20 +200,22 @@ button, select, input { font-family: inherit; }
 .bottom-nav {
   background: var(--nav-bg);
   border-top: 3px solid rgba(0,0,0,0.15);
-  display: flex; gap: 8px;
-  padding: clamp(6px, 1.5vh, 11px) 8px clamp(4px, 1vh, 8px);
+  display: flex; gap: 4px;
+  padding: clamp(6px, 1.5vh, 11px) 6px clamp(4px, 1vh, 8px);
   flex-shrink: 0;
 }
 .nav-tab {
-  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
-  padding: 8px 6px;
+  flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 8px 2px;
   border: none; background: transparent; border-radius: var(--radius-md);
   cursor: pointer;
-  font-family: var(--font-pixel); font-weight: 700; font-size: 10px;
-  letter-spacing: 0.5px; text-transform: uppercase;
+  font-family: var(--font-pixel); font-weight: 700; font-size: 9px;
+  letter-spacing: 0.2px; text-transform: uppercase;
   color: var(--taupe);
+  white-space: nowrap;
 }
-.nav-tab img { width: 24px; height: 24px; object-fit: contain; margin-bottom: 2px; }
+.nav-tab img { width: 24px; height: 24px; object-fit: contain; margin-bottom: 2px; flex-shrink: 0; }
+.nav-tab span { max-width: 100%; overflow-wrap: break-word; word-break: break-word; text-align: center; line-height: 1.15; }
 .nav-tab.active { background: var(--accent-tint); color: var(--accent); }
 
 /* ---------- generic page header / content ---------- */
@@ -446,6 +448,38 @@ body.no-animations .run-bob { animation: none; }
 body.no-animations .screen { animation: none; }
 
 @media (max-width: 420px) {
-  #phone { border-radius: 0; border-width: 0; height: 100vh; }
-  body { padding: 0; }
+  #phone { border-radius: 0; border-width: 0; height: 100%; }
+  body {
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
+             env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+  }
+  .search-bar input, select#opt-language { font-size: 16px; }
+}
+
+@media (max-width: 360px) {
+  .bottom-nav { gap: 2px; padding-left: 4px; padding-right: 4px; }
+  .nav-tab { padding: 6px 2px; font-size: 8px; letter-spacing: 0.2px; }
+  .nav-tab img { width: 20px; height: 20px; }
+}
+
+/* short viewports (rotated phone / landscape): the fixed chrome (title +
+   buttons) needs a smaller floor than the portrait clamp()s allow once
+   the dino illustration has already shrunk away to nothing */
+@media (max-height: 420px) {
+  #screen-home .header-row { padding: 8px 24px 2px; }
+  #screen-home .hero-copy { padding-top: 4px; }
+  #screen-home .game-title { font-size: 22px; letter-spacing: 3px; }
+  #screen-home .subtitle-row { margin-top: 4px; }
+  #screen-home .subtitle { font-size: 10px; }
+  #screen-home .hero-dino { padding-bottom: 2px; }
+  #screen-home .cta-col { gap: 6px; padding: 0 24px 6px; }
+  #screen-home .btn { padding: 7px 24px; }
+  #screen-home .bottom-nav { padding: 4px 8px 3px; }
+  #screen-home .nav-tab { padding: 4px 6px; }
+}
+
+/* iOS Safari: 100vh includes the toolbar area even when it's showing.
+   100dvh tracks the real, currently-visible viewport instead. */
+@supports (height: 100dvh) {
+  html, body { height: 100dvh; }
 }
